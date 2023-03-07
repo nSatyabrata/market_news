@@ -1,4 +1,9 @@
-import requests, json, os, time, logging, boto3
+import requests
+import json
+import os
+import time
+import logging
+import boto3
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -25,6 +30,8 @@ class S3UploadError(Exception):
 
 
 def get_url_response(url: str) -> Optional[dict]:
+    '''Get response from provided url.'''
+
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -63,7 +70,6 @@ def extract_news_data_of_topics(topics: list, time_from: str, time_to: str) -> s
         end = time.perf_counter()
         diff = end - start
         time_elapsed += diff
-        print(f"{topic,i}: {diff}")
 
     data = json.dumps(data, indent=3)
     return data

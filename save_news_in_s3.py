@@ -1,4 +1,10 @@
-import requests, json, os, time, logging, boto3, sys
+import requests
+import json
+import os
+import time
+import logging
+import boto3
+import sys
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from typing import Optional
@@ -30,13 +36,15 @@ else:
 
 
 class S3UploadError(Exception):
-    '''Custom exception for s3 data upload'''
+    '''Custom exception for s3 data upload error.'''
 
     def __init__(self, message) -> None:
         self.message = message
         super().__init__(self.message)
 
 def get_url_response(url: str) -> Optional[dict]:
+    '''Get response from provided url.'''
+
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -97,7 +105,7 @@ if __name__ == "__main__":
 
         today = NOW.date().strftime('%d-%m-%y')
         key = 'news/' + today + '.json'
-        bucket = 'economydataprojec'
+        bucket = 'economydataproject'
 
         upload_data_s3(data, bucket, key)
         logger.info("Data extraction successful")
