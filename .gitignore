@@ -2,3 +2,4 @@ venv/
 .env
 aws_venv/
 market_news.json
+__pycache__/

@@ -2,6 +2,7 @@ import boto3
 import json
 from typing import Optional
 from datetime import datetime
+from database import Database
 
 NOW = datetime.today()
 
@@ -37,3 +38,7 @@ if __name__ == "__main__":
         print(len(data))
     except Exception as e:
         print(e)
+    # try:
+    #     db = Database(host="host", database="database", user="user", password="password")
+    # except Exception as error:
+    #     print(error)
