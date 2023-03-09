@@ -8,6 +8,13 @@ class DatabaseConnectionError(Exception):
         self.message = message
         super().__init__(self.message)
 
+class DatabaseOperationError(Exception):
+    '''Custom exception for database operation error.'''
+
+    def __init__(self, message) -> None:
+        self.message = message
+        super().__init__(self.message)
+
 class Database:
 
     def __init__(self, host: str, database: str, user: str, password: str, port: int=5432) -> None:
@@ -25,7 +32,10 @@ class Database:
             raise DatabaseConnectionError(f"Unable to connect to database.\n{error=}")
 
     def query(self, query: str):
-        self._cursor.execute(query)
+        try:
+            self._cursor.execute(query)
+        except Exception as error:
+            raise DatabaseOperationError(f"Database operation error.\n{error=}")
 
     def commit(self):
         self._connection.commit()
@@ -33,4 +43,3 @@ class Database:
     def close(self):
         self._cursor.close()
         self._connection.close()
-    

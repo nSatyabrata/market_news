@@ -1,8 +1,19 @@
 import boto3
 import json
+import os
 from typing import Optional
 from datetime import datetime
 from database import Database
+from database_utilities import create_market_news_table_if_not_exist
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_HOST = os.environ['DB_HOST']
+DB_NAME = os.environ['DB_NAME']
+DB_PORT = os.environ['DB_PORT']
+DB_USER = os.environ['DB_USER']
+DB_PASSWORD = os.environ['DB_PASSWORD']
 
 NOW = datetime.today()
 
@@ -36,6 +47,15 @@ if __name__ == "__main__":
     try:
         data = get_data_from_s3(bucket, key)
         print(len(data))
+
+        db = Database(host=DB_HOST,
+                      database=DB_NAME,
+                      user=DB_USER,
+                      password=DB_PASSWORD,
+                      port=DB_PORT)
+    
+        create_market_news_table_if_not_exist(db)
+        db.commit()
     except Exception as e:
         print(e)
     # try:
