@@ -4,7 +4,7 @@ import os
 from typing import Optional
 from datetime import datetime
 from database import Database
-from database_utilities import create_market_news_table_if_not_exist
+from database_utilities import create_table_if_not_exist, insert_today_news_data
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -41,6 +41,7 @@ def get_data_from_s3(bucket: str, key: str) -> Optional[dict]:
 if __name__ == "__main__":
 
     today = NOW.date().strftime('%d-%m-%y')
+    #today = datetime(year=2023, month=3, day=10).date().strftime('%d-%m-%y')
     key = 'news/' + today + '.json'
     print(key)
     bucket = 'economydataproject'
@@ -54,7 +55,8 @@ if __name__ == "__main__":
                       password=DB_PASSWORD,
                       port=DB_PORT)
     
-        create_market_news_table_if_not_exist(db)
+        create_table_if_not_exist(db)
+        insert_today_news_data(data, db)
         db.commit()
     except Exception as e:
         print(e)

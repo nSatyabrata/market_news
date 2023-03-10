@@ -30,6 +30,9 @@ class Database:
             self._cursor = self._connection.cursor()
         except Exception as error:
             raise DatabaseConnectionError(f"Unable to connect to database.\n{error=}")
+    
+    def get_cursor(self):
+        return self._cursor
 
     def query(self, query: str):
         try:
