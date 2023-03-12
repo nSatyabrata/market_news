@@ -34,12 +34,6 @@ class Database:
     def get_cursor(self):
         return self._cursor
 
-    def query(self, query: str):
-        try:
-            self._cursor.execute(query)
-        except Exception as error:
-            raise DatabaseOperationError(f"Database operation error.\n{error=}")
-
     def commit(self):
         self._connection.commit()
 
